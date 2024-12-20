@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+    />
+    <title>Дневник</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="/alpine-3.14.7.js" defer></script>
+  </head>
+  <body x-data="{ addBehaviorShown: false }">
+    <div class="header-panel">
+      <h1>Дневник</h1>
+    </div>
+    <div class="button-container">
+      <div class="buttons-row">
+        <button>Заполнить дневник</button>
+        <button
+          @click="addBehaviorShown = !addBehaviorShown"
+          :class="{ 'button-active': addBehaviorShown }"
+        >
+          Добавить поведение
+        </button>
+      </div>
+      <div class="hint-text">
+        <p><a href="#">Добавить примеры поведения</a></p>
+        <p>Вы можете отредактировать или удалить этот список позднее</p>
+      </div>
+    </div>
+
+    <div
+      class="add-behavior"
+      x-show="addBehaviorShown"
+      x-init="$watch('addBehaviorShown', value => value && $nextTick(() => $refs.behaviorInput.focus()))"
+    >
+      <input
+        type="text"
+        placeholder="Описание поведения"
+        x-ref="behaviorInput"
+      />
+      <select>
+        <option value="binary">Да / Нет</option>
+        <option value="scale">Шкала</option>
+        <option value="text">Текст</option>
+      </select>
+      <div class="button-container">
+        <button>Добавить</button>
+        <button @click="addBehaviorShown = false">Отмена</button>
+      </div>
+    </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then((registration) =>
+            console.log("Service Worker registered:", registration.scope)
+          )
+          .catch((error) =>
+            console.log("Service Worker registration failed:", error)
+          );
+      }
+    </script>
+  </body>
+</html>
